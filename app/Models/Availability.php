@@ -5,22 +5,19 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Task extends Model
+class Availability extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'user_id',
-        'title',
-        'slug',
-        'description',
-        'assigned_on',
-        'closed_on',
-        'status'
+        'from',
+        'to',
+        'weekend'
     ];
 
     public function user()
     {
-        $this->hasMany('App\Model\User');
+        $this->belongsTo('App\Models\User');
     }
 }

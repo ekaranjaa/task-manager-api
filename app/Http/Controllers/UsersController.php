@@ -6,24 +6,23 @@ use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\ValidationException;
 
 class UsersController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
-        $user = new UserResource(
-            User::findOrFail($request->user()->id)
+        $users = UserResource::collection(
+            User::with(['role', 'availability', 'tasks'])->paginate(50)
         );
 
-        return $user;
+        return $users;
     }
 
     public function search($query)
     {
         $users = UserResource::collection(
-            User::where('name', 'LIKE', "%{$query}%")
+            User::with(['role', 'availability', 'tasks'])
+                ->where('name', 'LIKE', "%{$query}%")
                 ->orWhere('email', 'LIKE', "%{$query}%")
                 ->paginate(30)
         );

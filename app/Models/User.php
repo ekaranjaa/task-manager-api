@@ -33,6 +33,11 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->belongsTo('App\Models\Role');
     }
 
+    public function availability()
+    {
+        return $this->hasOne('App\Models\Availability');
+    }
+
     public function tasks()
     {
         return $this->hasMany('App\Models\Task');

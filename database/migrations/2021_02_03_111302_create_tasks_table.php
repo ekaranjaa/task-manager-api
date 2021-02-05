@@ -19,7 +19,9 @@ class CreateTasksTable extends Migration
             $table->string('title')->unique();
             $table->string('slug')->unique();
             $table->longText('description');
-            $table->string('status');
+            $table->dateTime('assigned_on')->nullable();
+            $table->dateTime('closed_on')->nullable();
+            $table->string('status')->nullable();
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->nullOnDelete();

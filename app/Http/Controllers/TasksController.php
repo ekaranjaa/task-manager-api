@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 
 class TasksController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
         $task = TaskResource::collection(
             Task::paginate(50)
@@ -32,17 +32,14 @@ class TasksController extends Controller
     public function create(Request $request)
     {
         $request->validate([
-            'user_id' => 'required',
             'title' => 'required|unique:tasks',
             'description' => 'required'
         ]);
 
         $task = new Task([
-            'user_id' => $request->user_id,
             'title' => $request->title,
-            'slug' => Str::slug($request->name),
-            'description' => $request->description,
-            'status' => 'unassigned'
+            'slug' => Str::slug($request->title),
+            'description' => $request->description
         ]);
 
         if ($task->save()) {
@@ -53,7 +50,6 @@ class TasksController extends Controller
     public function update(Request $request, Task $task, $id)
     {
         $request->validate([
-            'user_id' => 'required',
             'title' => 'required|unique:tasks',
             'description' => 'required'
         ]);
@@ -62,9 +58,8 @@ class TasksController extends Controller
 
 
         $task->update([
-            'user_id' => $request->user_id,
             'title' => $request->title,
-            'slug' => Str::slug($request->name),
+            'slug' => Str::slug($request->title),
             'description' => $request->description
         ]);
 
@@ -73,7 +68,25 @@ class TasksController extends Controller
         }
     }
 
-    public function updateStatus(Request $request, Task $task, $id)
+    public function assign(Request $request, Task $task, $id)
+    {
+        $request->validate([
+            'user_id' => 'required'
+        ]);
+
+        $task = $task::findOrFail($id);
+
+        $task->update([
+            'user_id' => $request->user_id,
+            'assigned_on' => now()
+        ]);
+
+        if ($task->save()) {
+            return response()->json(['message' => 'Task assigned.']);
+        }
+    }
+
+    public function close(Request $request, Task $task, $id)
     {
         $request->validate([
             'status' => 'required'
@@ -83,10 +96,11 @@ class TasksController extends Controller
 
         $task->update([
             'status' => $request->status,
+            'closed_on' => now()
         ]);
 
         if ($task->save()) {
-            return response()->json(['message' => 'Task status updated.']);
+            return response()->json(['message' => 'Task closed.']);
         }
     }
 

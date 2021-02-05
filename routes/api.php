@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\AvailabilitiesController;
 use App\Http\Controllers\RolesController;
 use App\Http\Controllers\TasksController;
 use App\Http\Controllers\UsersController;
@@ -34,6 +35,11 @@ Route::middleware('auth:sanctum')->prefix('auth')->group(function () {
     Route::put('update', [AuthController::class, 'update']);
     Route::put('update-password', [AuthController::class, 'updatePassword']);
     Route::delete('delete', [AuthController::class, 'delete']);
+
+    Route::prefix('availability')->group(function () {
+        Route::post('create', [AvailabilitiesController::class, 'create']);
+        Route::put('update', [AvailabilitiesController::class, 'update']);
+    });
 });
 
 Route::middleware('auth:sanctum')->prefix('roles')->group(function () {
@@ -56,6 +62,7 @@ Route::middleware('auth:sanctum')->prefix('tasks')->group(function () {
     Route::get('search/{query}', [TasksController::class, 'search']);
     Route::post('create', [TasksController::class, 'create']);
     Route::put('update/{id}', [TasksController::class, 'update']);
-    Route::put('update-status/{id}', [TasksController::class, 'updateStatus']);
+    Route::put('assign/{id}', [TasksController::class, 'assign']);
+    Route::put('close/{id}', [TasksController::class, 'close']);
     Route::delete('delete/{id}', [TasksController::class, 'delete']);
 });

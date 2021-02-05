@@ -14,7 +14,7 @@ class AuthController extends Controller
     public function index(Request $request)
     {
         $user = new UserResource(
-            User::with(['role', 'tasks'])->findOrFail($request->user()->id)
+            User::with(['role', 'availability', 'tasks'])->findOrFail($request->user()->id)
         );
 
         return $user;

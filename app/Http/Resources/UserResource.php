@@ -24,6 +24,7 @@ class UserResource extends JsonResource
                 'updated_at' => $this->updated_at
             ],
             'role' => new RoleResource($this->role),
+            'availability' => new AvailabilityResource($this->availability),
             'tasks' => TaskResource::collection($this->tasks)
         ];
     }

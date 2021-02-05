@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 class RolesController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
         $role = RoleResource::collection(
             Role::paginate(50)
