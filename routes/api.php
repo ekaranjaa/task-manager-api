@@ -1,11 +1,7 @@
 <?php
 
-<<<<<<< HEAD
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\RolesController;
-=======
-use App\Http\Controllers\AdminsController;
->>>>>>> 8f9de2fcbc92b00e54b8f91ce7318c52e5b542f0
 use App\Http\Controllers\TasksController;
 use App\Http\Controllers\UsersController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
@@ -28,7 +24,6 @@ Route::prefix('email')->group(function () {
     })->middleware('throttle:6,1')->name('verification.send');
 });
 
-<<<<<<< HEAD
 Route::middleware('auth:sanctum')->prefix('auth')->group(function () {
     Route::post('login', [AuthController::class, 'login'])
         ->withoutMiddleware('auth:sanctum');
@@ -63,48 +58,4 @@ Route::middleware('auth:sanctum')->prefix('tasks')->group(function () {
     Route::put('update/{id}', [TasksController::class, 'update']);
     Route::put('update-status/{id}', [TasksController::class, 'updateStatus']);
     Route::delete('delete/{id}', [TasksController::class, 'delete']);
-=======
-Route::middleware('auth:admin')->prefix('admin')->group(function () {
-    Route::get('/', [AdminsController::class, 'index']);
-    Route::get('/all', [AdminsController::class, 'read']);
-    Route::post('login', [AdminsController::class, 'login'])
-        ->withoutMiddleware('auth:admin');
-    Route::post('register', [AdminsController::class, 'register'])
-        ->withoutMiddleware('auth:admin');
-    Route::post('logout', [AdminsController::class, 'logout']);
-    Route::put('update/{id}', [AdminsController::class, 'update']);
-    Route::put('update-password/{id}', [AdminsController::class, 'updatePassword']);
-    Route::delete('delete/{id}', [AdminsController::class, 'delete']);
-
-    Route::prefix('users')->group(function () {
-        Route::get('/all', [UsersController::class, 'read']);
-    });
-
-    Route::prefix('tasks')->group(function () {
-        Route::get('/', [TasksController::class, 'index']);
-        Route::get('search/{query}', [TasksController::class, 'search']);
-        Route::post('create', [TasksController::class, 'create']);
-        Route::put('update/{id}', [TasksController::class, 'update']);
-        Route::put('update-status/{id}', [TasksController::class, 'updateStatus']);
-        Route::delete('delete/{id}', [TasksController::class, 'delete']);
-    });
-});
-
-Route::middleware('auth:user')->prefix('user')->group(function () {
-    Route::get('/', [UsersController::class, 'index']);
-    Route::post('login', [UsersController::class, 'login'])
-        ->withoutMiddleware('auth:user');
-    Route::post('register', [UsersController::class, 'register'])
-        ->withoutMiddleware('auth:user');
-    Route::post('logout', [UsersController::class, 'logout']);
-    Route::put('update/{id}', [UsersController::class, 'update']);
-    Route::put('update-password/{id}', [UsersController::class, 'updatePassword']);
-    Route::delete('delete/{id}', [UsersController::class, 'delete']);
-
-    Route::prefix('tasks')->group(function () {
-        Route::get('/', [TasksController::class, 'index']);
-        Route::put('update-status/{id}', [TasksController::class, 'updateStatus']);
-        Route::get('search/{query}', [TasksController::class, 'search']);
-    });
->>>>>>> 8f9de2fcbc92b00e54b8f91ce7318c52e5b542f0
 });

@@ -13,10 +13,7 @@ class User extends Authenticatable implements MustVerifyEmail
     use HasFactory, Notifiable, HasApiTokens;
 
     protected $fillable = [
-<<<<<<< HEAD
         'role_id',
-=======
->>>>>>> 8f9de2fcbc92b00e54b8f91ce7318c52e5b542f0
         'name',
         'email',
         'password',
@@ -31,7 +28,6 @@ class User extends Authenticatable implements MustVerifyEmail
         'email_verified_at' => 'datetime',
     ];
 
-<<<<<<< HEAD
     public function role()
     {
         return $this->belongsTo('App\Models\Role');
@@ -40,10 +36,5 @@ class User extends Authenticatable implements MustVerifyEmail
     public function tasks()
     {
         return $this->hasMany('App\Models\Task');
-=======
-    public function tasks()
-    {
-        $this->hasMany('App\Models\Task');
->>>>>>> 8f9de2fcbc92b00e54b8f91ce7318c52e5b542f0
     }
 }
