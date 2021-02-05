@@ -22,7 +22,11 @@ class CreateTasksTable extends Migration
             $table->string('status');
             $table->timestamps();
 
+<<<<<<< HEAD
             $table->foreign('user_id')->references('id')->on('users')->nullOnDelete();
+=======
+            $table->foreign('user_id')->references('id')->on('users');
+>>>>>>> 8f9de2fcbc92b00e54b8f91ce7318c52e5b542f0
         });
     }
 

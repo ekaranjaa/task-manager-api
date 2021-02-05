@@ -52,6 +52,15 @@ return [
             'provider' => 'users',
             'hash' => false,
         ],
+<<<<<<< HEAD
+=======
+
+        'admin' => [
+            'driver' => 'sanctum',
+            'provider' => 'admins',
+            'hash' => false,
+        ],
+>>>>>>> 8f9de2fcbc92b00e54b8f91ce7318c52e5b542f0
     ],
 
     /*
@@ -76,6 +85,14 @@ return [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
         ],
+<<<<<<< HEAD
+=======
+
+        'admins' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Admin::class,
+        ],
+>>>>>>> 8f9de2fcbc92b00e54b8f91ce7318c52e5b542f0
     ],
 
     /*
@@ -100,6 +117,16 @@ return [
             'expire' => 60,
             'throttle' => 60,
         ],
+<<<<<<< HEAD
+=======
+
+        'admins' => [
+            'provider' => 'admins',
+            'table' => 'password_resets',
+            'expire' => 60,
+            'throttle' => 60,
+        ],
+>>>>>>> 8f9de2fcbc92b00e54b8f91ce7318c52e5b542f0
     ],
 
     /*

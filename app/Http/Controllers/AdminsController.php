@@ -2,53 +2,44 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\UserResource;
-use App\Models\User;
+use App\Http\Resources\AdminResource;
+use App\Models\Admin;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
-<<<<<<< HEAD
-
-class UsersController extends Controller
-{
-    public function index()
-=======
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 
-class UsersController extends Controller
+class AdminsController extends Controller
 {
     public function index(Request $request)
     {
-        $user = new UserResource(
-            User::findOrFail($request->user()->id)
+        $admin = new AdminResource(
+            Admin::findOrFail($request->user()->id)
         );
 
-        return $user;
+        return $admin;
     }
 
     public function read()
->>>>>>> 8f9de2fcbc92b00e54b8f91ce7318c52e5b542f0
     {
-        $users = UserResource::collection(
-            User::with('tasks')->paginate(50)
+        $admins = AdminResource::collection(
+            Admin::paginate(50)
         );
 
-        return $users;
+        return $admins;
     }
 
     public function search($query)
     {
-        $users = UserResource::collection(
-            User::where('name', 'LIKE', "%{$query}%")
+        $admins = AdminResource::collection(
+            Admin::where('name', 'LIKE', "%{$query}%")
                 ->orWhere('email', 'LIKE', "%{$query}%")
                 ->paginate(30)
         );
 
-        return $users;
+        return $admins;
     }
 
-<<<<<<< HEAD
-=======
     public function login(Request $request)
     {
         $request->validate([
@@ -56,39 +47,39 @@ class UsersController extends Controller
             'password' => 'required',
         ]);
 
-        $user = User::where('email', $request->email)->first();
+        $admin = Admin::where('email', $request->email)->first();
 
-        if (!$user) {
+        if (!$admin) {
             throw ValidationException::withMessages([
-                'email' => ['No such user.'],
+                'email' => ['No such admin.'],
             ]);
         }
 
-        if (!Hash::check($request->password, $user->password)) {
+        if (!Hash::check($request->password, $admin->password)) {
             throw ValidationException::withMessages([
                 'password' => ['Incorrect password.'],
             ]);
         }
 
-        return $user->createToken($request->email)->plainTextToken;
+        return $admin->createToken($request->email)->plainTextToken;
     }
 
     public function register(Request $request)
     {
         $request->validate([
             'name' => 'required',
-            'email' => 'required|email|unique:users',
+            'email' => 'required|email|unique:admins',
             'password' => 'required|confirmed|min:8',
         ]);
 
-        $user = new User([
+        $admin = new Admin([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
 
-        if ($user->save()) {
-            event(new Registered($user));
+        if ($admin->save()) {
+            event(new Registered($admin));
             return response()->json(['message' => 'Account created.']);
         }
     }
@@ -100,83 +91,66 @@ class UsersController extends Controller
         return response()->json(['message' => 'Logged out.']);
     }
 
->>>>>>> 8f9de2fcbc92b00e54b8f91ce7318c52e5b542f0
-    public function update(Request $request, User $user, $id)
+    public function update(Request $request, Admin $admin, $id)
     {
         $request->validate([
             'name' => 'required',
             'email' => 'required|email'
         ]);
 
-        $user = $user::findOrFail($id);
+        $admin = $admin::findOrFail($id);
 
-        if ($request->email !== $user->email) {
+        if ($request->email !== $admin->email) {
             $request->validate([
-                'email' => 'unique:users'
+                'email' => 'unique:admins'
             ]);
 
-            $user->update([
+            $admin->update([
                 'email' => $request->email,
                 'email_verified_at' => null
             ]);
 
-            event(new Registered($user));
+            event(new Registered($admin));
         }
 
-        $user->update([
+        $admin->update([
             'name' => $request->name
         ]);
 
-        if ($user->save()) {
+        if ($admin->save()) {
             return response()->json(['message' => 'Account updated.']);
         }
     }
 
-<<<<<<< HEAD
-    public function updatePermission(Request $request, User $user, $id)
-    {
-        $request->validate([
-            'role_id' => 'required'
-=======
-    public function updatePassword(Request $request, User $user, $id)
+    public function updatePassword(Request $request, Admin $admin, $id)
     {
         $request->validate([
             'current_password' => 'required',
             'password' => 'required|confirmed|min:8'
->>>>>>> 8f9de2fcbc92b00e54b8f91ce7318c52e5b542f0
         ]);
 
-        $user = $user::findOrFail($id);
+        $admin = $admin::findOrFail($id);
 
-<<<<<<< HEAD
-        $user->update([
-            'role_id' => $request->role_id
-        ]);
-
-        if ($user->save()) {
-            return response()->json(['message' => 'User permision updated.']);
-=======
-        if (!Hash::check($request->current_password, $user->password)) {
+        if (!Hash::check($request->current_password, $admin->password)) {
             throw ValidationException::withMessages([
                 'current_password' => ['Incorrect password.'],
             ]);
         }
 
-        $user->update([
+        $admin->update([
             'password' => Hash::make($request->password),
         ]);
 
-        if ($user->save()) {
+        if ($admin->save()) {
             return response()->json(['message' => 'Password changed.']);
->>>>>>> 8f9de2fcbc92b00e54b8f91ce7318c52e5b542f0
         }
     }
 
-    public function delete(User $user, $id)
+    public function delete(Admin $admin, $id)
     {
-        $user = $user::findOrFail($id);
+        $admin = $admin::findOrFail($id);
 
-        if ($user->delete()) {
+        if ($admin->delete()) {
             return response()->json(['message' => 'Account deleted.']);
         }
     }
