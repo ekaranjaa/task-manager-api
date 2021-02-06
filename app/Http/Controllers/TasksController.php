@@ -79,7 +79,7 @@ class TasksController extends Controller
         $task->update([
             'user_id' => $request->user_id,
             'assigned_on' => now(),
-            'status' => 'underway'
+            'status' => 'pending'
         ]);
 
         if ($task->save()) {
